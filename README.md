@@ -17,4 +17,3 @@ Use git. We like seing history of small improvements instead of big pushes with 
 If you wish, you can use a configuration management tool (We use ansible). The infrastructure provider is up to you (We use AWS, Vagrant and Docker).
 
 It is not required to implement all the features you can think of. A clean bare minimum working infrastructure is prefered than a full blown solution peaced together with scissors, rope and duct tape. Do not skip security considerations.
-
