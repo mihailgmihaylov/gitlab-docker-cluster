@@ -6,6 +6,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
   config.hostmanager.manage_guest = true
   config.hostmanager.ignore_private_ip = false
   config.hostmanager.include_offline = true
+  ENV['VAGRANT_NO_PARALLEL'] = 'yes'
 
   ROLES = %w(
     database-primary
@@ -42,6 +43,12 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
           d.has_ssh = true
           d.privileged = true
         end
+      end
+
+      case role
+      when 'gitlab'
+        role_config.vm.network :forwarded_port, guest: 80, host: 10080
+        role_config.vm.network :forwarded_port, guest: 443, host: 10443
       end
 
 
