@@ -2,18 +2,25 @@
 
 This repo stores the means to build a high available GitLab solution based on Vagrant and Docker.
 
-## The task
-Your task is to provision a highly available wordpress cluster. The entry point of the cluster should be a host and port 443.
+## Implementation instructions
 
-## The solution
-In your solution please enphasize on readability, maintanability and DevOps methodologies. We expect a clear way to recreate your setup.
+### Prerequisites for running Vagrant
 
-Use git. We like seing history of small improvements instead of big pushes with unclear goals.
+* Vagrant, version 1.8.7 or above (tested)
 
-If you wish, you can use a configuration management tool (We use ansible). The infrastructure provider is up to you (We use AWS, Vagrant and Docker).
+  Previous versions might not work with the Vagrant configuration file.
 
-It is not required to implement all the features you can think of. A clean bare minimum working infrastructure is prefered than a full blown solution peaced together with scissors, rope and duct tape. Do not skip security considerations.
-=======
+  Visit https://www.vagrantup.com/downloads.html
+
+* Vagrant Hostmanager
+
+  Visit https://github.com/devopsgroup-io/vagrant-hostmanager
+  
+  To install hostmanager, with which the connection between vagrant hosts is made, just:
+
+  ```
+  vagrant plugin install vagrant-hostmanager
+  ```
 ## References
 
 For more details on how a GitLab infrastructure should be build and deployed you can refer to these documentations:
