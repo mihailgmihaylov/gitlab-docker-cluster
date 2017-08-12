@@ -10,6 +10,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
   ROLES = %w(
     database-primary
     database-standby
+    redis
   ).freeze
 
   ROLES.each do |role|
@@ -23,11 +24,15 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
           d.has_ssh = true
           d.privileged = true
         end
+      elsif role == 'redis'
+        role_config.vm.provider :docker do |d, override|
+          d.build_dir = 'redis'
+          # d.volumes = ["/var/docker/redis:/data"]
+          d.name = role
+          d.has_ssh = true
+          d.privileged = true
+        end
       end
-      # elsif role == 'puppetserver'
-      # end
-      # else
-      # end
 
 
       if role == 'database-primary'
