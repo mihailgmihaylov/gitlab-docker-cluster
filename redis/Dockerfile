@@ -20,6 +20,6 @@ RUN chown -R vagrant:vagrant /home/vagrant/.ssh \
   && chmod 0700 /home/vagrant/.ssh
 ADD 01_vagrant /etc/sudoers.d/
 
-EXPOSE 5432
+EXPOSE 6379
 EXPOSE 22
 CMD docker-entrypoint.sh redis-server & /usr/sbin/sshd -D
