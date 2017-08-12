@@ -7,25 +7,17 @@
     dbuser: gitlab
     dbpassword: G1tL@b 
   tasks:
-    - name: install postgresql package
-      apt: name={{ item }} state=installed
-      with_items:
-        - postgresql-server-dev-9.6
-
-    - name: install psycopg2 python module
+    - name: Install psycopg2 python module
       pip: name=psycopg2
 
+    - name: Ensure user {{dbuser}} has access to database {{dbname}}
+      postgresql_user: name={{dbuser}} password={{dbpassword}} role_attr_flags=SUPERUSER
+
     - name: Ensure database {{dbname}} is created
-      postgresql_db: name={{dbname}}
+      postgresql_db: name={{dbname}} owner={{dbuser}}
 
     - name: Ensure database {{dbname_ci}} is created
-      postgresql_db: name={{dbname_ci}}
-
-    - name: Ensure user {{dbuser}} has access to database {{dbname}}
-      postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
-
-    - name: Ensure user {{dbuser}} has access to database {{dbname_ci}}
-      postgresql_user: db={{dbname_ci}} name={{dbuser}} password={{dbpassword}} priv=ALL
+      postgresql_db: name={{dbname_ci}} owner={{dbuser}}
       register: gitlab_database
 
     - debug: var=gitlab_database.stdout
