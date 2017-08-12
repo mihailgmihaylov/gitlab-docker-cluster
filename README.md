@@ -21,6 +21,9 @@ This repo stores the means to build a high available GitLab solution based on Va
   ```
   vagrant plugin install vagrant-hostmanager
   ```
+
+
+
 ## References
 
 For more details on how a GitLab infrastructure should be build and deployed you can refer to these documentations:
