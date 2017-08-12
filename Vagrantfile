@@ -17,7 +17,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
   ).freeze
 
   NODES.each do |node|
-    config.vm.define(node) do |role_config|
+    config.vm.define(node) do |node_config|
       if node =~ /^database.*/
         node_config.vm.provider :docker do |d, override|
           d.build_dir = 'postgres'
