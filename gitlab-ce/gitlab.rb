@@ -1,0 +1,26 @@
+external_url 'http://gitlab-ha.dev'
+gitlab_rails['db_adapter'] = "postgresql"
+gitlab_rails['db_encoding'] = "unicode"
+gitlab_rails['db_database'] = "gitlab"
+gitlab_rails['db_pool'] = 10
+gitlab_rails['db_username'] = "gitlab"
+gitlab_rails['db_password'] = "G1tL@b"
+gitlab_rails['db_host'] = "database-primary"
+gitlab_rails['db_port'] = 5432
+gitlab_rails['redis_host'] = "redis"
+gitlab_rails['redis_port'] = 6379
+gitlab_rails['redis_database'] = 0
+postgresql['enable'] = false
+redis['enable'] = false
+nginx['enable'] = true
+nginx['redirect_http_to_https'] = true
+gitlab_ci['db_adapter'] = "postgresql"
+gitlab_ci['db_encoding'] = "unicode"
+gitlab_ci['db_database'] = "gitlab-ci"
+gitlab_ci['db_pool'] = 10
+gitlab_ci['db_username'] = "gitlab"
+gitlab_ci['db_password'] = "G1tL@b"
+gitlab_ci['db_host'] = "database-primary"
+gitlab_ci['db_port'] = 5432
+gitlab_ci['redis_host'] = "redis"
+gitlab_ci['redis_port'] = 6379

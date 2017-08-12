@@ -35,7 +35,8 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
         end
       elsif role =~ /gitlab/
         role_config.vm.provider :docker do |d, override|
-          d.image = "gitlab/gitlab-ce"
+          # d.image = "gitlab/gitlab-ce"
+          d.build_dir = 'gitlab-ce'
           # d.volumes = ["/var/docker/gitlab:/data"]
           d.name = role
           d.has_ssh = true
