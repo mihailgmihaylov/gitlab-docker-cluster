@@ -11,6 +11,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
     database-primary
     database-standby
     redis
+    gitlab
   ).freeze
 
   ROLES.each do |role|
@@ -28,6 +29,14 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
         role_config.vm.provider :docker do |d, override|
           d.build_dir = 'redis'
           # d.volumes = ["/var/docker/redis:/data"]
+          d.name = role
+          d.has_ssh = true
+          d.privileged = true
+        end
+      elsif role =~ /gitlab/
+        role_config.vm.provider :docker do |d, override|
+          d.image = "gitlab/gitlab-ce"
+          # d.volumes = ["/var/docker/gitlab:/data"]
           d.name = role
           d.has_ssh = true
           d.privileged = true
