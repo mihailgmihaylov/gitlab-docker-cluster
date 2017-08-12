@@ -13,14 +13,26 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
   ).freeze
 
   ROLES.each do |role|
-    if role =~ /^database.*/
-      config.vm.define(role) do |role_config|
-        role_config.vm.provider :docker do |v, override|
-          # v.build_dir = '.'
-          # v.dockerfile = 'Dockerfile.postgres'
-          v.image = "postgres:9.6"
-          v.name = role
-          v.privileged = true
+    config.vm.define(role) do |role_config|
+      if role =~ /^database.*/
+        role_config.vm.provider :docker do |d, override|
+          d.build_dir = 'postgres'
+          # d.image = "postgres:9.6"
+          # d.volumes = ["/var/docker/redis:/data"]
+          d.name = role
+          d.has_ssh = true
+          d.privileged = true
+        end
+      end
+      # elsif role == 'puppetserver'
+      # end
+      # else
+      # end
+
+
+      if role == 'database-primary'
+        role_config.vm.provision :ansible, run: :always do |ansible|
+          ansible.playbook = 'scripts/database-primary.yml'
         end
       end
     end

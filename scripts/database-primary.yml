@@ -1,0 +1,31 @@
+---
+- hosts: all
+  become: Yes
+  vars:
+    dbname: gitlab
+    dbname_ci: gitlab-ci
+    dbuser: gitlab
+    dbpassword: G1tL@b 
+  tasks:
+    - name: install postgresql package
+      apt: name={{ item }} state=installed
+      with_items:
+        - postgresql-server-dev-9.6
+
+    - name: install psycopg2 python module
+      pip: name=psycopg2
+
+    - name: Ensure database {{dbname}} is created
+      postgresql_db: name={{dbname}}
+
+    - name: Ensure database {{dbname_ci}} is created
+      postgresql_db: name={{dbname_ci}}
+
+    - name: Ensure user {{dbuser}} has access to database {{dbname}}
+      postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+
+    - name: Ensure user {{dbuser}} has access to database {{dbname_ci}}
+      postgresql_user: db={{dbname_ci}} name={{dbuser}} password={{dbpassword}} priv=ALL
+      register: gitlab_database
+
+    - debug: var=gitlab_database.stdout
