@@ -14,28 +14,12 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
     redis
     gitlab-1
     gitlab-2
+    haproxy
   ).freeze
 
   NODES.each do |node|
     config.vm.define(node) do |node_config|
-      if node =~ /^database.*/
-        node_config.vm.provider :docker do |d, override|
-          d.build_dir = 'postgres'
-          # d.image = "postgres:9.6"
-          # d.volumes = ["/var/docker/redis:/data"]
-          d.name = node
-          d.has_ssh = true
-          d.privileged = true
-        end
-      elsif node == 'redis'
-        node_config.vm.provider :docker do |d, override|
-          d.build_dir = 'redis'
-          # d.volumes = ["/var/docker/redis:/data"]
-          d.name = node
-          d.has_ssh = true
-          d.privileged = true
-        end
-      elsif node =~ /gitlab/
+      if node =~ /gitlab/
         node_config.vm.provider :docker do |d, override|
           # d.image = "gitlab/gitlab-ce"
           d.build_dir = 'gitlab-ce'
@@ -51,6 +35,22 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
         node_config.vm.synced_folder "mountdirs/builds", "/var/opt/gitlab/gitlab-ci/builds"
         # node_config.vm.network :forwarded_port, guest: 80, host: 10080
         # node_config.vm.network :forwarded_port, guest: 443, host: 10443
+      elsif node =~ /^database.*/
+        node_config.vm.provider :docker do |d, override|
+          d.build_dir = 'postgres'
+          # d.image = "postgres:9.6"
+          # d.volumes = ["/var/docker/redis:/data"]
+          d.name = node
+          d.has_ssh = true
+          d.privileged = true
+        end
+      else
+        node_config.vm.provider :docker do |d, override|
+          d.build_dir = node
+          d.name = node
+          d.has_ssh = true
+          d.privileged = true
+        end
       end
 
       if node == 'database-primary'
