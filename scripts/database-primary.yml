@@ -18,6 +18,3 @@
 
     - name: Ensure database {{dbname_ci}} is created
       postgresql_db: name={{dbname_ci}} owner={{dbuser}}
-      register: gitlab_database
-
-    - debug: var=gitlab_database.stdout

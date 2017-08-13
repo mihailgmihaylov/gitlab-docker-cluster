@@ -2,12 +2,8 @@
 
 cat /etc/hosts
 # Configure gitlab IP addresses
-# gitlab1ip=`cat /etc/hosts|grep gitlab-1|awk '{print $1}'`
-# gitlab2ip=`cat /etc/hosts|grep gitlab-2|awk '{print $1}'`
 localip=`ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1`
 
-# sed -i "s/gitlab-1/$gitlab1ip/g" /usr/local/etc/haproxy/haproxy.cfg
-# sed -i "s/gitlab-2/$gitlab2ip/g" /usr/local/etc/haproxy/haproxy.cfg
 sed -i "s/haproxy:/${localip}:/g" /usr/local/etc/haproxy/haproxy.cfg
 
 # Start HAProxy
