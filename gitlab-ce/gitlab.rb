@@ -1,4 +1,5 @@
 external_url 'http://gitlab-ha.dev'
+high_availability['mountpoint'] = '/var/opt/gitlab/git-data'
 gitlab_rails['db_adapter'] = "postgresql"
 gitlab_rails['db_encoding'] = "unicode"
 gitlab_rails['db_database'] = "gitlab"
