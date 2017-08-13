@@ -4,7 +4,9 @@ FROM haproxy:1.7
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
 RUN useradd haproxy \
-  && echo haproxy:haproxy | chpasswd
+  && echo haproxy:haproxy | chpasswd \
+  && mkdir /var/lib/haproxy \
+  && chown -R haproxy:haproxy /var/lib/haproxy
 
 # Setup SSHD daemon for vagrant ssh
 RUN apt-get update && apt-get install -y openssh-server \
