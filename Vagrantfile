@@ -19,11 +19,10 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
 
   NODES.each do |node|
     config.vm.define(node) do |node_config|
-      if node =~ /gitlab/
+      # Creating GitLab Environment
+      if node =~ /^gitlab.*/
         node_config.vm.provider :docker do |d, override|
-          # d.image = "gitlab/gitlab-ce"
           d.build_dir = 'gitlab-ce'
-          # d.volumes = ["/var/docker/gitlab:/data"]
           d.name = node
           d.has_ssh = true
           d.privileged = true
@@ -36,8 +35,6 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
       elsif node =~ /^database.*/
         node_config.vm.provider :docker do |d, override|
           d.build_dir = 'postgres'
-          # d.image = "postgres:9.6"
-          # d.volumes = ["/var/docker/redis:/data"]
           d.name = node
           d.has_ssh = true
           d.privileged = true
@@ -63,6 +60,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
         end
       end
 
+      # Provisioning Steps
       if node == 'database-primary'
         node_config.vm.provision :ansible, run: :always do |ansible|
           ansible.playbook = 'scripts/database-primary.yml'
