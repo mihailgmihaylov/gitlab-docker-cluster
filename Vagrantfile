@@ -52,6 +52,7 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
       node_config.vm.network :forwarded_port, guest: 80, host: 10080
       node_config.vm.network :forwarded_port, guest: 443, host: 10443
       node_config.vm.network :forwarded_port, guest: 22, host: 10022
+      node_config.ssh.port = 2222
       else
         node_config.vm.provider :docker do |d, override|
           d.build_dir = node
