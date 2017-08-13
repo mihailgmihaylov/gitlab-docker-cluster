@@ -33,8 +33,6 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
         node_config.vm.synced_folder "mountdirs/uploads", "/var/opt/gitlab/gitlab-rails/uploads"
         node_config.vm.synced_folder "mountdirs/shared", "/var/opt/gitlab/gitlab-rails/shared"
         node_config.vm.synced_folder "mountdirs/builds", "/var/opt/gitlab/gitlab-ci/builds"
-        # node_config.vm.network :forwarded_port, guest: 80, host: 10080
-        # node_config.vm.network :forwarded_port, guest: 443, host: 10443
       elsif node =~ /^database.*/
         node_config.vm.provider :docker do |d, override|
           d.build_dir = 'postgres'
@@ -44,6 +42,16 @@ Vagrant.configure(VAGRANT_API_VERSION) do |config|
           d.has_ssh = true
           d.privileged = true
         end
+      elsif node == 'haproxy'
+        node_config.vm.provider :docker do |d, override|
+          d.build_dir = node
+          d.name = node
+          d.has_ssh = true
+          d.privileged = true
+        end
+      node_config.vm.network :forwarded_port, guest: 80, host: 10080
+      node_config.vm.network :forwarded_port, guest: 443, host: 10443
+      node_config.vm.network :forwarded_port, guest: 22, host: 10022
       else
         node_config.vm.provider :docker do |d, override|
           d.build_dir = node
